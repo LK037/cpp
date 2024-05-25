@@ -1,27 +1,39 @@
+#include <vector>
+#include <stack>
+
+using namespace std;
+
 class NestedIterator {
- public:
-  NestedIterator(vector<NestedInteger>& nestedList) {
-    addInteger(nestedList);
-  }
+public:
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        
+        for (int i = nestedList.size() - 1; i >= 0; --i) {
+            stk.push(nestedList[i]);
+        }
+    }
 
-  int next() {
-    const int num = q.front();
-    q.pop();
-    return num;
-  }
+    int next() {
+        int result = stk.top().getInteger();
+        stk.pop();
+        return result;
+    }
 
-  bool hasNext() {
-    return !q.empty();
-  }
+    bool hasNext() {
+        while (!stk.empty()) {
+            NestedInteger current = stk.top();
+            if (current.isInteger()) {
+                return true;
+            }
+            stk.pop();
+            vector<NestedInteger>& nestedList = current.getList();
+            for (int i = nestedList.size() - 1; i >= 0; --i) {
+                stk.push(nestedList[i]);
+            }
+        }
+        return false;
+    }
 
- private:
-  queue<int> q;
-
-  void addInteger(const vector<NestedInteger>& nestedList) {
-    for (const NestedInteger& ni : nestedList)
-      if (ni.isInteger())
-        q.push(ni.getInteger());
-      else
-        addInteger(ni.getList());
-  }
+private:
+    stack<NestedInteger> stk;
 };
+
