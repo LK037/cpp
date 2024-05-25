@@ -17,6 +17,7 @@ public:
         }
     }
 
+
     void pop() {
         ms.pop();
         s.pop();
