@@ -1,0 +1,52 @@
+#include <iostream>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+class Solution {
+public:
+   
+    string simplifyPath(string path) {
+        stack<string> s;
+        int n = path.length();
+
+        for(int i=0;i<n;i++){
+            if(path[i] == '/') continue;
+
+            string dir;
+            while(i < n && path[i] != '/'){
+                dir+=path[i++];
+            }
+
+            if(dir == ".."){
+                if(!s.empty()){
+                    s.pop();
+                }
+            }
+
+            if(dir != "." && !dir.empty()){
+                s.push(dir);
+            }
+        }
+
+        string res;
+        while(!s.empty()){
+            res = "/"+s.top()+res;
+            s.pop(); 
+        }
+
+        return res.empty() ? "/" : res;
+    }
+};
+
+int main() {
+    
+    Solution solution;
+    string path;
+    cout<<"enter the path"<<endl;
+    cin>>path;
+    cout << "Simplified Path: " << solution.simplifyPath(path) << endl;
+
+    return 0;
+}
