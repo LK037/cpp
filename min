@@ -1,0 +1,38 @@
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+class MinStack {
+public:
+    stack<int> s;
+    stack<int> ms;
+    MinStack() {}
+    void push(int val) {
+        s.push(val);
+        if (ms.empty() || val <= ms.top()) {
+            ms.push(val);
+        }else {
+            ms.push(ms.top());
+        }
+    }
+
+    void pop() {
+        ms.pop();
+        s.pop();
+    }
+
+    int top() { return s.top(); }
+
+    int getMin() { return ms.top(); }
+};
+int main() {
+    
+    MinStack* obj = new MinStack();
+    obj->push(5);
+    obj->push(3);
+    obj->push(4);
+    cout << "Minimum Value: " << obj->getMin() << endl;
+
+    return 0;
+}
